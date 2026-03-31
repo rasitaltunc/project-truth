@@ -3,6 +3,14 @@
 # "Code is open. Strategy is private."
 # ══════════════════════════════════════════
 
+# ── ALL research & strategy (private — stay local) ──
+research/
+docs/research/
+docs/briefs/
+docs/guides/
+docs/migrations/ATLAS_FULL_MIGRATION.sql
+seed_research_data.sql
+
 # ── Dependencies ──
 node_modules/
 
@@ -64,6 +72,12 @@ docs/Arastirmalar/
 
 # ── Test documents & artifacts ──
 test-documents/
+fetched-documents/
+apps/dashboard/fetched-documents/
+
+# ── Internal strategy docs (not for public) ──
+apps/dashboard/MASTER_PLAN.md
+MASTER_PLAN.md
 
 # ── OS files ──
 .DS_Store
