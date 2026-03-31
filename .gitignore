@@ -1,0 +1,96 @@
+# ══════════════════════════════════════════
+# PROJECT TRUTH — .gitignore
+# "Code is open. Strategy is private."
+# ══════════════════════════════════════════
+
+# ── Dependencies ──
+node_modules/
+
+# ── Build outputs ──
+dist/
+.next/
+.next_old*/
+.next.bak/
+out/
+build/
+*.tsbuildinfo
+
+# ── Environment variables (CRITICAL — never commit secrets) ──
+.env
+.env.*
+!.env.example
+
+# ── Internal strategy & memory (NOT for public) ──
+CLAUDE.md
+.claude/
+
+# ── Private archives & conversations ──
+archive/
+claude tüm konuşma.rtfd/
+
+# ── Private research (strategy, security, legal) ──
+# Educational research goes to /research (public)
+# Strategic research stays local only
+research/01-foundation/FOUNDERS_LOG.md
+research/01-foundation/DEEP_04_DMS_SECURITY_ARCHITECTURE.md
+research/01-foundation/DEEP_07_MANIPULATION_PROOF_SYSTEMS.md
+research/01-foundation/DEEP_08_GAME_THEORY_GOVERNANCE.md
+research/02-legal/
+research/05-security/API_SECURITY_AUDIT_REPORT.md
+research/05-security/SECURITY_B1_DIFF.md
+research/06-intelligence/AI_ANALYST_SYSTEM_PROMPTS.md
+research/09-platform-strategy/
+research/12-indexes-summaries/ERROR_LEARNING_LEDGER.md
+research/01-foundation/FUNDING_STRATEGY_MASTER.md
+research/platform-strategy/
+research/security-auth/
+
+# ── Root-level internal docs (not for public) ──
+CRITICAL_GAPS_ACTIONABLE.md
+DATABASE_AUDIT_REPORT_2026-03-27.md
+DATABASE_AUDIT_SUMMARY_2026-03-27.txt
+DIRECTORY_INDEX.md
+RESEARCH_REVIEW_CRITICAL_ANALYSIS.md
+RESEARCH_STRENGTHS_WEAKNESSES_MATRIX.md
+VERIFICATION_DESK_V2_RESEARCH_EXTRACTION.md
+
+# ── Internal docs with sensitive prompts ──
+docs/research/AI_AUDIT_INDEX.md
+docs/research/AI_TOUCHPOINT_QUICK_REFERENCE.md
+docs/research/R3_AI_EXTRACTION_QUALITY.md
+docs/research/R3_ENTITY_RESOLUTION_SOTA.md
+docs/research/ZERO_RISK_AI_SOLUTIONS.md
+docs/Arastirmalar/
+
+# ── Test documents & artifacts ──
+test-documents/
+
+# ── OS files ──
+.DS_Store
+Thumbs.db
+
+# ── IDE ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Debug ──
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Testing ──
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# ── Vercel ──
+.vercel/
+
+# ── Sentry ──
+.sentryclirc
+
+# ── Supabase local ──
+supabase/.temp/

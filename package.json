@@ -1,0 +1,19 @@
+{
+  "name": "ai-os",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:bot": "pnpm -C apps/bot dev",
+    "dev:miniapp": "pnpm -C apps/miniapp dev"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.29.2",
+    "lucide-react": "^0.563.0",
+    "tailwind-merge": "^3.4.0",
+    "zustand": "^5.0.11"
+  }
+}

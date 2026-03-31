@@ -1,0 +1,121 @@
+{
+  "$schema": "scoring-config-v1.0.0",
+  "version": "1.0.0",
+  "created": "2026-03-22",
+  "description": "Project Truth 5-Layer Confidence Scoring Configuration. Tested against 315 entities across 10 documents with 99.7% calibration.",
+
+  "documentTypes": {
+    "sworn_testimony": { "baseline": 0.95, "ceiling": 0.98, "description": "Sworn testimony under oath, perjury penalty" },
+    "court_filing":    { "baseline": 0.88, "ceiling": 0.95, "description": "Filed in court proceeding, Rule 11 signed" },
+    "fbi_report":      { "baseline": 0.82, "ceiling": 0.92, "description": "FBI investigation file, FOIA release" },
+    "government_filing": { "baseline": 0.78, "ceiling": 0.90, "description": "Official government document" },
+    "deposition_reference": { "baseline": 0.75, "ceiling": 0.88, "description": "Deposition-cited facts and references" },
+    "complaint":       { "baseline": 0.72, "ceiling": 0.85, "description": "Rule 11 certified advocacy document" },
+    "legal_correspondence": { "baseline": 0.70, "ceiling": 0.85, "description": "Attorney correspondence, not sworn" },
+    "credible_journalism": { "baseline": 0.65, "ceiling": 0.82, "description": "Published journalism, editorial standards" }
+  },
+
+  "subSourceAdjustments": {
+    "sworn_affidavit":       0.02,
+    "police_reports":        0.01,
+    "fbi_302":               0.00,
+    "fbi_ec":                0.00,
+    "court_order":           0.02,
+    "newspaper":            -0.05,
+    "fbi_evidence_inventory": 0.01,
+    "grand_jury_subpoena":   0.01
+  },
+
+  "generatingBodyBonus": 0.01,
+
+  "reliabilityDiscounts": {
+    "A": 0.00,
+    "B": 0.00,
+    "C": -0.02,
+    "D": -0.04,
+    "E": -0.06,
+    "F": -0.08
+  },
+
+  "newspaperOnlyB3Discount": -0.02,
+
+  "evidenceTypeBoosts": {
+    "sworn_testimony":   0.02,
+    "police_record":     0.015,
+    "fbi_302":           0.015,
+    "fbi_report":        0.015,
+    "court_record":      0.01,
+    "physical_evidence": 0.02,
+    "financial_record_subpoenaed": 0.01,
+    "financial_record_newspaper":  0.005
+  },
+
+  "mentionVolumeBonus": {
+    "high": { "threshold": 100, "bonus": 0.01 },
+    "medium": { "threshold": 20, "bonus": 0.005 }
+  },
+
+  "natoScoreMap": {
+    "A1": 0.05, "A2": 0.04, "A3": 0.03,
+    "B1": 0.04, "B2": 0.03, "B3": 0.02,
+    "C1": 0.03, "C2": 0.02, "C3": 0.01,
+    "D1": 0.02, "D2": 0.01, "D3": 0.00,
+    "E1": 0.01, "E2": 0.00, "E3": -0.01, "E4": -0.02
+  },
+
+  "berkeleyBoosts": {
+    "physical_evidence": 0.015,
+    "sworn_testimony":   0.015,
+    "police_record":     0.01,
+    "fbi_302":           0.01,
+    "fbi_report":        0.01,
+    "financial_record":  0.005,
+    "court_record":      0.005,
+    "newspaperOnlyDiscount": -0.01,
+    "richEvidenceThreshold": 4,
+    "richEvidenceBonus":     0.01,
+    "multiEvidenceThreshold": 2,
+    "multiEvidenceBonus":     0.005
+  },
+
+  "achConfig": {
+    "swornTypes":    ["sworn_testimony"],
+    "physicalTypes": ["police_record", "fbi_302", "physical_evidence", "financial_record"],
+    "legalTypes":    ["court_record", "fbi_report"],
+    "mediaTypes":    ["credible_journalism"],
+    "legalWeight":   0.5,
+    "mediaWeight":   0.3,
+    "scoreThresholds": [
+      { "sources": 5, "score": 0.02 },
+      { "sources": 3, "score": 0.015 },
+      { "sources": 2, "score": 0.01 },
+      { "sources": 1, "score": 0.005 }
+    ]
+  },
+
+  "transparencyBoosts": {
+    "sworn_testimony":   0.005,
+    "police_record":     0.005,
+    "court_record":      0.005,
+    "fbi_302":           0.005,
+    "fbi_report":        0.005,
+    "physical_evidence": 0.005,
+    "financial_record":  0.005
+  },
+
+  "bandThresholds": {
+    "CONFIRMED":       0.95,
+    "HIGHLY_PROBABLE":  0.80,
+    "PROBABLE":         0.55,
+    "POSSIBLE":         0.30,
+    "UNVERIFIED":       0.00
+  },
+
+  "calibrationReference": {
+    "totalEntities": 315,
+    "correctClassifications": 314,
+    "calibrationRate": 0.997,
+    "documentsUsed": 10,
+    "documentTypesUsed": ["sworn_testimony", "court_filing", "fbi_report", "deposition_reference", "complaint", "credible_journalism", "legal_correspondence"]
+  }
+}

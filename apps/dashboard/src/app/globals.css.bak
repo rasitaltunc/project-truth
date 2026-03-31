@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --foreground-rgb: 220, 38, 38;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+    --truth-red: #dc2626;
+    --truth-dark-red: #991b1b;
+    --truth-blood: #7f1d1d;
+}
+
+body {
+    color: #fecaca;
+    background: #000000;
+    overflow: hidden;
+}
+
+.glass-panel {
+    background: rgba(10, 10, 10, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === PROJECT TRUTH - EVIDENCE MODAL STYLES === */
+
+/* Scrollbar gizleme */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Redacted text hover efekti */
+.redacted-text {
+    background: linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    background-size: 200% 100%;
+    animation: redacted-shimmer 2s ease-in-out infinite;
+}
+
+@keyframes redacted-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Stamp efekti için pulse */
+@keyframes stamp-pulse {
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Modal giriş efekti için ekstra */
+.evidence-modal {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* Noise texture animation (subtle) */
+@keyframes noise-shift {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    10% {
+        transform: translate(-1%, -1%);
+    }
+
+    20% {
+        transform: translate(1%, 1%);
+    }
+
+    30% {
+        transform: translate(-1%, 1%);
+    }
+
+    40% {
+        transform: translate(1%, -1%);
+    }
+
+    50% {
+        transform: translate(-1%, 0);
+    }
+
+    60% {
+        transform: translate(1%, 0);
+    }
+
+    70% {
+        transform: translate(0, 1%);
+    }
+
+    80% {
+        transform: translate(0, -1%);
+    }
+
+    90% {
+        transform: translate(1%, 1%);
+    }
+}

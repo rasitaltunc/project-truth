@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default: Demir İrade */
+  --bg-color: #0f172a;
+  --text-color: #e2e8f0;
+  --primary-color: #3b82f6;
+  --secondary-color: #1e293b;
+  --accent-color: #64748b;
+}
+
+[data-theme="wizard"] {
+  /* Harry Potter Modu */
+  --bg-color: #2a1b12;
+  --text-color: #eecfa1;
+  --primary-color: #d4af37;
+  --secondary-color: #462e20;
+  --accent-color: #7b3f00;
+}
+
+[data-theme="cyberpunk"] {
+  /* Matrix/Cyberpunk Modu */
+  --bg-color: #000000;
+  --text-color: #00ff41;
+  --primary-color: #ff00ff;
+  --secondary-color: #111111;
+  --accent-color: #00e5ff;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.5s ease;
+}

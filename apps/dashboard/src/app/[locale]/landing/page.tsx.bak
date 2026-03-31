@@ -1,0 +1,29 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+
+// Dynamic imports with SSR disabled for framer-motion components
+// Framer Motion's useScroll/useTransform hooks need browser context
+const HeroSection = dynamic(() => import('@/components/Landing/HeroSection'), { ssr: false });
+const ProblemSection = dynamic(() => import('@/components/Landing/ProblemSection'), { ssr: false });
+const ScrollytellingDemo = dynamic(() => import('@/components/Landing/ScrollytellingDemo'), { ssr: false });
+const FeaturesDeep = dynamic(() => import('@/components/Landing/FeaturesDeep'), { ssr: false });
+const TrustArchitecture = dynamic(() => import('@/components/Landing/TrustArchitecture'), { ssr: false });
+const StatsSection = dynamic(() => import('@/components/Landing/StatsSection'), { ssr: false });
+const FinalCTA = dynamic(() => import('@/components/Landing/FinalCTA'), { ssr: false });
+const FooterSection = dynamic(() => import('@/components/Landing/FooterSection'), { ssr: false });
+
+export default function LandingPage() {
+  return (
+    <main style={{ background: '#030303', color: '#e5e5e5', minHeight: '100vh' }}>
+      <HeroSection />
+      <ProblemSection />
+      <ScrollytellingDemo />
+      <FeaturesDeep />
+      <TrustArchitecture />
+      <StatsSection />
+      <FinalCTA />
+      <FooterSection />
+    </main>
+  );
+}
