@@ -833,7 +833,7 @@ export async function stripPdfMetadata(file: File): Promise<File> {
 
         // Save as new PDF (also removes incremental update metadata)
         const cleanedBytes = await pdfDoc.save();
-        return new File([cleanedBytes], cleanName, { type: 'application/pdf' });
+        return new File([cleanedBytes as BlobPart], cleanName, { type: 'application/pdf' });
     } catch {
         // If pdf-lib fails (encrypted, corrupted), fall back to filename-only strip
         // Better to upload with cleaned name than fail entirely
