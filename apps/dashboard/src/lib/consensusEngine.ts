@@ -3,11 +3,12 @@
  *
  * The Truth Pipeline: UNDERSTAND + SCORE stages
  *
- * Pass 1 (Conservative): Extract only explicitly stated entities
- * Pass 2 (Verification): Verify Pass 1 results against document
- * Pass 3 (Aggressive): Find anything Pass 1 missed
+ * Pass 1 (Thorough): Extract all explicitly mentioned entities
+ * Pass 2 (Independent): Second independent extraction (does NOT see Pass 1 results)
+ * Pass 3 (Aggressive): Find anything Pass 1+2 missed
  *
- * Consensus: 3/3 → high confidence, 2/3 → accept, 1/3 → reject (likely hallucination)
+ * Consensus: 3/3 → high confidence, 2/3 → accept, 1/3 → validate against document text
+ * Document Text Validation: 1/3 entities verified in document → accept (low confidence), not found → reject
  *
  * 8-Signal Post-Hoc Confidence: Replace AI self-reported confidence with calculated score
  */
@@ -103,7 +104,7 @@ export interface ScanJobResult {
 // ═══════════════════════════════════════════
 
 function buildPass1Prompt(documentText: string, nodeList: string, hasRealContent: boolean, caseContext?: string): string {
-  return `You are an investigative analyst. Extract ONLY entities that are EXPLICITLY and CLEARLY mentioned in this document.
+  return `You are an investigative analyst. Extract ALL entities that are EXPLICITLY mentioned in this document. Be THOROUGH — it is critical to find every person, organization, location, and financial amount mentioned.
 
 ${caseContext ? `EXPECTED CASE CONTEXT:\n${caseContext}\nIf this document does NOT appear to belong to this case, set confidence to 0 and note "CASE_MISMATCH" in summary.\n` : ''}
 DOCUMENT CONTENT:
@@ -112,16 +113,17 @@ ${documentText}
 CURRENT NETWORK PEOPLE (for matching):
 ${nodeList}
 
-RULES — STRICT:
-- Extract ONLY what is EXPLICITLY stated in the document
-- If uncertain, DO NOT include — it is better to miss than to hallucinate
+RULES:
+- Extract ALL named persons, organizations, specific locations, and financial amounts explicitly stated in the document
+- Include ALL people mentioned by name: judges, attorneys, prosecutors, defendants, witnesses, agents — everyone with a full name
+- Legal professionals should be importance: "low" unless they are subjects of investigation, but still EXTRACT them
 - Every entity MUST have a direct quote from the document as "context"
 - LANGUAGE: ALL output must be in ENGLISH. Relationship types, roles, descriptions — everything in English. No Turkish, no other languages.
 - Do NOT extract generic terms as entities. BLOCKED LIST: "United States", "USA", "U.S.", "Government", "Court", "State", "People", "Plaintiff", "Defendant", "Prosecution", "Defense", "The People", "United States of America", "U.S. Government", "Southern District of New York", "SDNY", "Department of Justice", "DOJ", "FBI"
 - Do NOT extract case citations, docket numbers, or legal terms as entities
-- Legal professionals (judges, attorneys, clerks) should be importance: "low" unless they are also subjects of investigation
 - Victims should remain anonymous (Jane Doe format)
 - If a name matches someone in the current network, note it but verify independently
+- AIM FOR COMPLETENESS: It is better to extract a low-confidence entity than to miss a real one. Missing entities is the worst failure mode.
 ${!hasRealContent ? '- WARNING: Limited content. Extract only what is absolutely certain.' : ''}
 
 OUTPUT JSON:
@@ -139,71 +141,53 @@ CRITICAL — source_sentence rules:
 - source_page: set to the page number if pages are marked in the document, otherwise null.`;
 }
 
-function buildPass2Prompt(documentText: string, pass1Result: PassResult): string {
-  const entityList = pass1Result.entities
-    .map(e => `- ${e.name} (${e.type}, ${e.role}, confidence: ${e.confidence}, context: "${(e.context || '').substring(0, 80)}")`)
-    .join('\n');
-
-  const relList = pass1Result.relationships.length > 0
-    ? pass1Result.relationships
-      .map(r => `- ${r.sourceName} → ${r.targetName} (${r.relationshipType}, ${r.description})`)
-      .join('\n')
-    : '(none found in first pass)';
-
-  return `You are a SKEPTICAL fact-checker. Your job is to CHALLENGE the first analyst's work. Do NOT rubber-stamp — actively look for errors.
+function buildPass2Prompt(documentText: string, _pass1Result: PassResult): string {
+  // Pass 2 is now an INDEPENDENT extraction — it does NOT see Pass 1 results.
+  // This ensures true consensus: entities found by both Pass 1 and Pass 2 independently = strong signal.
+  return `You are a meticulous investigative analyst performing an INDEPENDENT review of this document. Extract ALL entities and relationships you can find.
 
 DOCUMENT CONTENT:
 ${documentText}
 
-ENTITIES CLAIMED BY FIRST ANALYST:
-${entityList}
+YOUR TASK — THOROUGH INDEPENDENT EXTRACTION:
 
-RELATIONSHIPS CLAIMED BY FIRST ANALYST:
-${relList}
+1. ENTITIES — Find EVERY named entity in this document:
+   - ALL persons mentioned by full name (judges, attorneys, prosecutors, defendants, agents, witnesses)
+   - ALL organizations (companies, government agencies, law firms, NGOs)
+   - ALL specific locations (cities, addresses, countries, properties, airports)
+   - ALL financial amounts (dollar values, property values, bail amounts)
+   - For each entity, provide the EXACT sentence from the document where it appears
+   - Do NOT extract generic terms. BLOCKED: "United States", "USA", "Government", "Court", "State", "People", "Plaintiff", "Defendant", "Prosecution", "Defense", "DOJ", "FBI", "SDNY"
 
-YOUR TASK — BE CRITICAL:
+2. RELATIONSHIPS — Find ALL connections between entities:
+   - Legal: defendant-judge, attorney-client, prosecutor-defendant, co-defendant
+   - Financial: payments, transfers, ownership, bail
+   - Social: employer-employee, family, associate, travel companion
+   - Criminal: co-conspirator, accomplice, recruiter, trafficker, victim-perpetrator
+   - EVERY relationship MUST cite a specific passage from the document
 
-1. ENTITY CHALLENGE — For EACH entity above, answer these questions:
-   - Search the document: does this EXACT name appear? (not a similar name, not an inference)
-   - Is the claimed role actually supported by the document text?
-   - Could this be a GENERIC TERM disguised as an entity? (e.g., "United States" is not an entity, it's a case party)
-   - Could this be CONFUSION with a similarly-named person?
-   - ONLY include entities where you found DIRECT textual evidence
-   - If an entity is NOT verifiable → EXCLUDE IT (do not include with confidence 0, just drop it)
-   - You MUST reject at least entities that have no clear document evidence
-
-2. RELATIONSHIP CHALLENGE — For EACH relationship:
-   - Does the document EXPLICITLY state this connection?
-   - Or was it INFERRED by the first analyst? (inference = exclude)
-   - Provide the EXACT passage that proves the connection
-   - Drop relationships that are merely implied or assumed
-
-3. NEW RELATIONSHIPS — Now look with FRESH EYES:
-   - What connections did the first analyst miss?
-   - Legal connections (defendant-judge, attorney-client, co-defendant)
-   - Financial connections (payments, transfers, ownership)
-   - Social connections (employer-employee, family, associate)
-   - Criminal connections (co-conspirator, accomplice, victim-perpetrator)
-   - EVERY new relationship MUST cite a specific document passage
+3. KEY DATES — Extract all dates mentioned with their context
 
 LANGUAGE: ALL output MUST be in English. No Turkish, no other languages.
 
-OUTPUT JSON (only VERIFIED entities and relationships):
+OUTPUT JSON:
 {
-  "entities": [{"name": "Full Name", "type": "person|organization|location|date|money", "role": "VERIFIED role (English)", "importance": "critical|high|medium|low", "category": "subject|victim|witness|legal_professional|law_enforcement|financial|administrative|mentioned_only", "confidence": 0.0-1.0, "mention_count": number, "context": "EXACT quote from document proving this entity exists", "source_sentence": "EXACT verbatim sentence from document — copy-paste, do NOT paraphrase", "source_page": page_number_or_null}],
-  "relationships": [{"sourceName": "Entity A", "targetName": "Entity B", "relationshipType": "english_type", "evidenceType": "court_record|financial_record|witness_testimony|official_document", "description": "EXACT passage showing this connection", "confidence": 0.0-1.0, "source_sentence": "EXACT verbatim sentence establishing this relationship — copy-paste", "source_page": page_number_or_null}],
-  "summary": "Verified summary (English)",
-  "keyDates": [{"date": "YYYY-MM-DD", "description": "verified event"}],
+  "entities": [{"name": "Full Name", "type": "person|organization|location|date|money", "role": "Role (English)", "importance": "critical|high|medium|low", "category": "subject|victim|witness|legal_professional|law_enforcement|financial|administrative|mentioned_only", "confidence": 0.0-1.0, "mention_count": number, "context": "Direct quote from document", "source_sentence": "EXACT verbatim sentence from document — copy-paste, do NOT paraphrase", "source_page": page_number_or_null}],
+  "relationships": [{"sourceName": "Entity A", "targetName": "Entity B", "relationshipType": "english_type", "evidenceType": "court_record|financial_record|witness_testimony|official_document", "description": "How relationship appears in document (English)", "confidence": 0.0-1.0, "source_sentence": "EXACT verbatim sentence establishing this relationship — copy-paste", "source_page": page_number_or_null}],
+  "summary": "2-3 sentence English summary of the document",
+  "keyDates": [{"date": "YYYY-MM-DD or original format", "description": "What happened"}],
   "confidence": 0.0-1.0
 }
 
-CRITICAL — source_sentence: MUST be verbatim from the document. If unverifiable, set source_sentence to "" and confidence to 0.2.`;
+CRITICAL — source_sentence: MUST be verbatim from the document. If not found, set source_sentence to "" and confidence below 0.3.`;
 }
 
-function buildPass3Prompt(documentText: string, pass1Result: PassResult, nodeList: string): string {
-  const alreadyFound = pass1Result.entities
-    .map(e => e.name)
-    .join(', ');
+function buildPass3Prompt(documentText: string, pass1Result: PassResult, nodeList: string, pass2Result?: PassResult): string {
+  // Combine Pass 1 + Pass 2 entity names for deduplication
+  const pass1Names = pass1Result.entities.map(e => e.name);
+  const pass2Names = (pass2Result?.entities || []).map(e => e.name);
+  const allFoundNames = [...new Set([...pass1Names, ...pass2Names])];
+  const alreadyFound = allFoundNames.join(', ');
 
   return `You are a thorough investigative researcher doing a FINAL PASS. The following entities were already found. Your job is to find ADDITIONAL entities that were MISSED and to find ALL relationships.
 
@@ -547,12 +531,20 @@ export function buildConsensus(
         passes: uniquePasses,
       });
     } else {
-      // 1/3 — Reject (likely hallucination)
+      // 1/3 — Only found in one pass. Mark for document text validation rescue.
+      // Instead of auto-rejecting, these will be validated against the actual document text
+      // in the validateConsensusEntities step. For now, accept with low confidence.
       consensus_1_3++;
-      rejected.push({
+      accepted.push({
         ...data.entity,
-        reason: `Only found in pass ${uniquePasses[0]} — likely hallucination or over-extraction`,
-      });
+        confidence: Math.min(data.bestConfidence, 0.45), // Cap at 0.45 — needs validation
+        context: data.bestContext,
+        source_sentence: data.bestSourceSentence,
+        source_page: data.bestSourcePage,
+        consensus: '2/3' as const, // Will be downgraded if validation fails
+        passes: uniquePasses,
+        _needs_validation: true, // Internal flag for validation step
+      } as typeof accepted[0]);
     }
   }
 
@@ -772,12 +764,29 @@ export function validateConsensusEntities(
   });
 
   // Separate: entities NOT found in document at all → move to rejected
-  const stillAccepted = validatedEntities.filter(e => (e.source_validation?.score ?? 0) >= 0.3);
+  // For 1/3 entities (_needs_validation), require higher validation score (0.4+)
+  // For 2/3+ entities, keep the existing 0.3 threshold
+  const stillAccepted = validatedEntities.filter(e => {
+    const score = e.source_validation?.score ?? 0;
+    const needsValidation = (e as Record<string, unknown>)._needs_validation === true;
+    if (needsValidation) {
+      // 1/3 entity rescued by document validation — needs name found in doc (0.4+)
+      return score >= 0.4;
+    }
+    return score >= 0.3;
+  });
   const newlyRejected = validatedEntities
-    .filter(e => (e.source_validation?.score ?? 0) < 0.3)
+    .filter(e => {
+      const score = e.source_validation?.score ?? 0;
+      const needsValidation = (e as Record<string, unknown>)._needs_validation === true;
+      if (needsValidation) return score < 0.4;
+      return score < 0.3;
+    })
     .map(e => ({
       ...e,
-      reason: `Entity "${e.name}" not found in document text (validation score: ${(e.source_validation?.score ?? 0).toFixed(2)})`,
+      reason: (e as Record<string, unknown>)._needs_validation
+        ? `Entity "${e.name}" found in only 1 pass and not verified in document text (score: ${(e.source_validation?.score ?? 0).toFixed(2)})`
+        : `Entity "${e.name}" not found in document text (validation score: ${(e.source_validation?.score ?? 0).toFixed(2)})`,
     }));
 
   return {
@@ -906,18 +915,21 @@ export async function runThreePassScan(
   // Small delay to respect rate limits
   await new Promise(r => setTimeout(r, 1500));
 
-  // ── PASS 2: Verification ──
-  const prompt2 = buildPass2Prompt(documentText, pass1);
-  const pass2 = await executePass(groqClient, prompt2, 'Pass2-Verification');
+  // ── PASS 2: Independent Extraction (does NOT see Pass 1 results) ──
+  const prompt2 = buildPass2Prompt(documentText, pass1); // pass1 param kept for signature compat, not used in prompt
+  const pass2 = await executePass(groqClient, prompt2, 'Pass2-Independent');
 
   await new Promise(r => setTimeout(r, 1500));
 
-  // ── PASS 3: Aggressive ──
-  const prompt3 = buildPass3Prompt(documentText, pass1, nodeList);
+  // ── PASS 3: Aggressive (receives combined Pass 1 + Pass 2 results) ──
+  const prompt3 = buildPass3Prompt(documentText, pass1, nodeList, pass2);
   const pass3 = await executePass(groqClient, prompt3, 'Pass3-Aggressive');
 
   // ── BUILD CONSENSUS ──
-  const consensus = buildConsensus(pass1, pass2, pass3);
+  let consensus = buildConsensus(pass1, pass2, pass3);
+
+  // ── VALIDATE against document text (rescues 1/3 entities, rejects hallucinations) ──
+  consensus = validateConsensusEntities(consensus, documentText);
 
   // ── 8-SIGNAL CONFIDENCE ──
   // Calculate document-level confidence (used for quarantine routing)
