@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
     // Run the actual 3-pass consensus engine with all required arguments
     const result = await runThreePassScan(
       groq,
-      text.substring(0, 25000), // Limit to fit context
+      text.substring(0, 50000), // Groq llama-3.3-70b has 128K context, ~50K chars = ~12K tokens
       'Jeffrey Epstein, Ghislaine Maxwell', // Known network nodes
       true, // hasRealContent
       'court_record', // Document type
