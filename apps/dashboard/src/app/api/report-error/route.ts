@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase, isSupabaseReady } from '@/lib/auth';
+import { supabase, isSupabaseReady } from '@/lib/supabaseClient';
 import { checkRateLimit, getClientId } from '@/lib/rateLimit';
 
 // ============================================
