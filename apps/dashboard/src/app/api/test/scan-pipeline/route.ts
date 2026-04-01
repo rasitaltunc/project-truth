@@ -9,6 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import Groq from 'groq-sdk';
 import { runThreePassScan } from '@/lib/consensusEngine';
 
 export async function POST(req: NextRequest) {
@@ -23,13 +24,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'GROQ_API_KEY not configured' }, { status: 500 });
     }
 
+    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
     const startTime = Date.now();
 
-    // Run the actual 3-pass consensus engine
+    // Run the actual 3-pass consensus engine with all required arguments
     const result = await runThreePassScan(
+      groq,
       text.substring(0, 25000), // Limit to fit context
       'Jeffrey Epstein, Ghislaine Maxwell', // Known network nodes
-      'court_record', // Document type for confidence scoring
+      true, // hasRealContent
+      'court_record', // Document type
+      'test_pipeline', // Source provider
+      'v1.0', // Prompt version
       undefined // No case context
     );
 
