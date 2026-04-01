@@ -115,15 +115,24 @@ ${nodeList}
 
 RULES:
 - Extract ALL named persons, organizations, specific locations, and financial amounts explicitly stated in the document
-- Include ALL people mentioned by name: judges, attorneys, prosecutors, defendants, witnesses, agents — everyone with a full name
+- PERSONS: Extract EVERY person mentioned by full name. This includes:
+  * Defendants, subjects of investigation
+  * Judges (e.g., "Judge Richard M. Berman", "Magistrate Judge Henry Pitman")
+  * Prosecutors and attorneys (e.g., "Assistant U.S. Attorney Alex Rossmiller", "Maurene Comey")
+  * Co-conspirators (e.g., "Ghislaine Maxwell" even if named as associate)
+  * Witnesses, agents, clerks — EVERYONE with a name
+  * Look for names in signature blocks, headers, case captions, and footnotes too
+- ORGANIZATIONS: Banks, law firms, companies, NGOs mentioned by name (e.g., "JP Morgan", "Deutsche Bank")
+- LOCATIONS: Specific addresses, cities, states, countries, property names (e.g., "East 71st Street", "New Mexico ranch")
+- FINANCIAL: Dollar amounts, property values, bail amounts (e.g., "$500 million", "$77 million mansion")
 - Legal professionals should be importance: "low" unless they are subjects of investigation, but still EXTRACT them
 - Every entity MUST have a direct quote from the document as "context"
 - LANGUAGE: ALL output must be in ENGLISH. Relationship types, roles, descriptions — everything in English. No Turkish, no other languages.
-- Do NOT extract generic terms as entities. BLOCKED LIST: "United States", "USA", "U.S.", "Government", "Court", "State", "People", "Plaintiff", "Defendant", "Prosecution", "Defense", "The People", "United States of America", "U.S. Government", "Southern District of New York", "SDNY", "Department of Justice", "DOJ", "FBI"
+- Do NOT extract generic institutional terms as entities. BLOCKED: "United States", "USA", "Government", "Court", "State", "People", "Plaintiff", "Defendant", "DOJ", "FBI", "SDNY", "Department of Justice" — but DO extract specific named organizations like "Deutsche Bank" or "JP Morgan Chase"
 - Do NOT extract case citations, docket numbers, or legal terms as entities
 - Victims should remain anonymous (Jane Doe format)
 - If a name matches someone in the current network, note it but verify independently
-- AIM FOR COMPLETENESS: It is better to extract a low-confidence entity than to miss a real one. Missing entities is the worst failure mode.
+- AIM FOR COMPLETENESS: Missing a real entity is WORSE than including a low-confidence one. Scan the ENTIRE document systematically from top to bottom.
 ${!hasRealContent ? '- WARNING: Limited content. Extract only what is absolutely certain.' : ''}
 
 OUTPUT JSON:
@@ -151,13 +160,14 @@ ${documentText}
 
 YOUR TASK — THOROUGH INDEPENDENT EXTRACTION:
 
-1. ENTITIES — Find EVERY named entity in this document:
-   - ALL persons mentioned by full name (judges, attorneys, prosecutors, defendants, agents, witnesses)
-   - ALL organizations (companies, government agencies, law firms, NGOs)
-   - ALL specific locations (cities, addresses, countries, properties, airports)
-   - ALL financial amounts (dollar values, property values, bail amounts)
+1. ENTITIES — Find EVERY named entity in this document (scan top to bottom, miss NOTHING):
+   - ALL persons by full name: defendants, judges, prosecutors, attorneys, agents, witnesses, co-conspirators, clerks. Check signature blocks, headers, captions, footnotes.
+   - ALL organizations by name: banks (e.g., "JP Morgan", "Deutsche Bank"), law firms, companies, NGOs
+   - ALL specific locations: addresses (e.g., "East 71st Street"), cities, states, countries, properties, airports
+   - ALL financial amounts: dollar values, property values, bail amounts, net worth figures
    - For each entity, provide the EXACT sentence from the document where it appears
-   - Do NOT extract generic terms. BLOCKED: "United States", "USA", "Government", "Court", "State", "People", "Plaintiff", "Defendant", "Prosecution", "Defense", "DOJ", "FBI", "SDNY"
+   - Do NOT extract generic institutional terms. BLOCKED: "United States", "USA", "Government", "Court", "State", "People", "Plaintiff", "Defendant", "Prosecution", "Defense", "DOJ", "FBI", "SDNY"
+   - But DO extract specific named organizations like "Deutsche Bank" or "JP Morgan Chase"
 
 2. RELATIONSHIPS — Find ALL connections between entities:
    - Legal: defendant-judge, attorney-client, prosecutor-defendant, co-defendant
@@ -304,16 +314,20 @@ async function executePass(
 
 const BLOCKED_ENTITIES = new Set([
   'united states', 'united states of america', 'usa', 'us', 'u.s.',
-  'government', 'u.s. government', 'federal government',
+  'government', 'u.s. government', 'federal government', 'the government',
   'court', 'the court', 'district court', 'appeals court', 'supreme court',
+  'united states district court', 'us district court', 'u.s. district court',
   'state', 'the state', 'people', 'the people',
   'plaintiff', 'defendant', 'prosecution', 'defense',
-  'department of justice', 'doj',
+  'department of justice', 'doj', 'u.s. department of justice', 'us department of justice',
   'federal bureau of investigation', 'fbi',
   'southern district of new york', 'sdny',
   'northern district', 'eastern district', 'western district',
+  'northern district of illinois', 'eastern district of new york', 'western district of texas',
   'grand jury', 'jury', 'probation office',
   'unknown', 'n/a', 'none', 'other',
+  // Block vehicles and generic objects that aren't real entities
+  'chevrolet suburbans', 'chevrolet suburban',
 ]);
 
 function isBlockedEntity(name: string): boolean {
