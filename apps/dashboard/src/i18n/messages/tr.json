@@ -65,7 +65,6 @@
       "f1Detail3Title": "Kademeli Alarm",
       "f1Detail3Text": "Sessiz → Sarı → Kırmızı. Kefiller tam aktivasyon öncesi doğrular. Yanlış alarm yok.",
       "f1Quote": "Bir gazeteciyi susturduğun anda, belgeleri binlerce kişiye ulaşır.",
-
       "f2Title": "Epistemolojik Katman",
       "f2Subtitle": "Her bağlantı ne kadar güvenilir olduğunu söyler",
       "f2Text": "Canlı kablolar kanıtla atar. Renk kanıt türünü gösterir. Parlaklık güveni. Nabız hızı kanıt yoğunluğunu. Bir bakışta neyin kanıtlandığını ve neyin iddia olduğunu görürsün.",
@@ -75,7 +74,6 @@
       "f2Detail2Text": "Kaynak hiyerarşisine dayalı %0-100 güven. Birincil kaynaklar en yüksek skoru alır.",
       "f2Detail3Title": "Kaynak Hiyerarşisi",
       "f2Detail3Text": "Birincil → İkincil → Üçüncül. Bir mahkeme kararı sosyal medya iddiasını geçer.",
-
       "f3Title": "Kolektif Soruşturma",
       "f3Subtitle": "Yalnız değilsin",
       "f3Text": "Bağlantı öner, kanıt sun, bulgulara oy ver. İtibar sistemi hesap verebilirliği sağlar — iddialarına itibarını koy, doğrulukla güven kazan.",
@@ -246,7 +244,36 @@
       "license": "Lisans (AGPL-3.0)",
       "privacy": "Gizlilik",
       "terms": "Koşullar",
+      "rights": "Haklarınız",
       "copyright": "© 2026 Project Truth Katkıcıları"
+    },
+    "v2": {
+      "hero": {
+        "title": "Bağlantıları Gör",
+        "subtitle": "Gizli ağları haritalamak, kanıtları kolektif zekayla doğrulamak ve gerçeği ortaya çıkaranların yanında durmak için kurulan açık kaynak platform.",
+        "cta": "Ağı Keşfet",
+        "scroll": "KAYDIR"
+      },
+      "meaning": {
+        "label": "NE YAPABİLİRSİN",
+        "title": "Dağınık kanıtlardan görünür bağlantılara",
+        "seeTitle": "Ağı Gör",
+        "seeText": "İnteraktif 3D görselleştirme, kişiler, kurumlar ve olaylar arasındaki gizli bağlantıları ortaya çıkarır. Görünmez olan aşikâr hale gelir.",
+        "scanTitle": "Belgeleri Tara",
+        "scanText": "AI destekli belge analizi, mahkeme kayıtlarından, mali dosyalardan ve sızdırılan belgelerden varlıkları çıkarır. Her iddia kaynağına bağlıdır.",
+        "verifyTitle": "Birlikte Doğrula",
+        "verifyText": "Hiçbir veri doğrulanmadan ağa giremez. Topluluk hakemli incelemesi hız yerine doğruluktan yana. Yanlış bilgi, eksik bilgiden her zaman daha tehlikelidir."
+      },
+      "trust": {
+        "manifesto": "Hiçbir veri doğrulanmadan ağa giremez. Hız değil doğruluk. Yalan değil sessizlik.",
+        "openSource": "Tamamen Açık Kaynak",
+        "zeroTracking": "Pseudonim Kimlik",
+        "communityVerified": "Topluluk Doğrulaması"
+      },
+      "footer": {
+        "privacy": "Gizlilik",
+        "copyright": "© 2026 Project Truth. AGPL-3.0 Lisansı."
+      }
     }
   },
   "ui": {
@@ -514,5 +541,231 @@
     "errorEmailRequired": "Email gerekli",
     "errorPasswordLength": "Şifre en az 8 karakter olmalı",
     "logout": "Çıkış Yap"
+  },
+  "rights": {
+    "title": "BİREYSEL HAKLAR",
+    "disclaimer": "Bu platformda yer almak suçluluğu göstermez. Tüm bireyler mahkum edilene kadar masum kabul edilir.",
+    "requestCorrection": "Düzeltme Talep Et",
+    "requestRemoval": "Kaldırma Talep Et",
+    "falseAccusation": "Yanlış İtham Bildir",
+    "caseDismissed": "Dava Düşürüldü / Beraat",
+    "statusUpdate": "Hukuki Durum Güncellemesi",
+    "slaNotice": "Talepler belirlenen süre içinde işleme alınır.",
+    "gdprNotice": "GDPR Madde 17 kaldırma talepleri yasal süre olan 30 gün içinde işlenir.",
+    "tierLabels": {
+      "centralFigure": "MERKEZİ FİGÜR",
+      "primarySubject": "BİRİNCİL ÖZNE",
+      "keyConnection": "KİLİT BAĞLANTI",
+      "connected": "BAĞLANTILI",
+      "peripheral": "ÇEVRESEL"
+    },
+    "legalLanguage": {
+      "alleged": "İDDİA EDİLEN",
+      "convicted": "MAHKUM EDİLMİŞ",
+      "charged": "İTHAM EDİLMİŞ",
+      "documented": "BELGELENMİŞ",
+      "accused": "SANIK"
+    }
+  },
+  "survivor": {
+    "shield": "MAĞDUR KORUMA SİSTEMİ",
+    "protected": "KORUMA ALTINDA",
+    "identityProtected": "KİMLİK KORUMA ALTINDA",
+    "protectedIndividual": "KORUMA ALTINDAKİ BİREY",
+    "protectionActive": "MAĞDUR KORUMASI AKTİF",
+    "cluster": "{count} Korunan Mağdur",
+    "doeCode": "Koruma Kimlik Kodu",
+    "optOut": {
+      "title": "Kaldırma Talebi",
+      "description": "Bu platformda temsil edilen bir mağdur iseniz, verilerinizin kaldırılmasını, anonimleştirilmesini veya kısıtlanmasını talep etme hakkınız vardır.",
+      "typeRemove": "Bilgilerimi tamamen kaldır",
+      "typeAnonymize": "Kimliğimi anonimleştir (bağlantı verilerini koru)",
+      "typeRestrict": "Detaylarıma erişimi kısıtla",
+      "reason": "Lütfen talebinizi açıklayın",
+      "email": "İletişim emaili (isteğe bağlı, yanıt için)",
+      "submit": "Talebi Gönder",
+      "success": "Talebiniz alındı ve 48 saat içinde incelenecektir.",
+      "error": "Talebiniz gönderilirken bir hata oluştu. Lütfen tekrar deneyin."
+    },
+    "warning": {
+      "extreme": "Bu bölüm cinsel istismar, insan ticareti veya sömürüye ilişkin ayrıntılı açıklamalar içerir. Bu içerik derinden rahatsız edici olabilir.",
+      "severe": "Bu bölüm istismar, insan ticareti veya sömürüye atıfta bulunur. Hassas ayrıntılar içerir.",
+      "moderate": "Bu bölüm bir mağdur veya kurban ile ilgilidir. İçerik özenle sunulmuştur.",
+      "mild": "Bu içerik mağdur veya kurlanlara atıflar içerir.",
+      "proceed": "DEVAM ET — ANLIYORUM",
+      "goBack": "GERİ DÖN",
+      "skipSession": "Bu oturum için uyarıları kapat",
+      "support": "DESTEK HATLARI",
+      "countdown": "DEVAM ET ({seconds}s)"
+    },
+    "archive": {
+      "statusProtected": "KORUMA ALTINDAKİ MAĞDUR",
+      "summaryRedacted": "Bu birey korunan bir mağdurdur. Gizlilik ve güvenliklerini korumak için ayrıntılar kısıtlanmıştır.",
+      "evidenceRestricted": "Bu korunan birey için kanıt detayları kısıtlanmıştır.",
+      "connectionNote": "Bu bağlantı korunan bir mağduru içerir. Sınırlı detay gösterilir."
+    }
+  },
+  "legal": {
+    "consent": {
+      "headline": "Dürüst pseudonimlik.",
+      "body": "İtibarınızı korumak için cihazınızı tanıyoruz — ama kim olduğunuzu bilmiyoruz. İzleme çerezi yok. Reklam yok. Kişisel veri toplama yok.",
+      "detail": "Parmak izi hash'iniz itibar sürekliliğini sağlar. Tam anonimlik için Tor kullanın.",
+      "privacyLink": "Gizlilik Politikamızı okuyun →",
+      "accept": "ANLADIM"
+    },
+    "networkDisclaimer": {
+      "text": "Bu platformda yer almak suçluluk göstermez. Tüm bağlantılar kamu kayıtlarına ve topluluk tarafından doğrulanmış kanıtlara dayanır. Tüm bireyler bir mahkemede suçlu bulunana kadar masum kabul edilir.",
+      "aiDisclaimer": "AI tarafından üretilen analizler hata içerebilir ve hukuki tespit niteliği taşımaz. Her zaman bağımsız kaynaklardan doğrulayın.",
+      "learnMore": "Metodolojimiz hakkında daha fazla bilgi"
+    },
+    "privacy": {
+      "title": "Gizlilik Politikası",
+      "lastUpdated": "SON GÜNCELLEME: NİSAN 2026",
+      "corePromise": "Cihazınızı tanıyoruz, sizi tanımıyoruz. Project Truth dürüst pseudonimlik ilkesi üzerine inşa edilmiştir — neyi topladığımız ve neyi toplamadığımız konusunda şeffafız. Teknik olarak garanti edemeyeceğimiz bir gizlilik vaadinde asla bulunmayız.",
+      "identity": {
+        "title": "Kimlik Modelimiz",
+        "intro": "Project Truth üç katmanlı bir kimlik modeli kullanır. Her katman hakkında dürüstüz:",
+        "tableWhat": "VERİ",
+        "tableStatus": "DURUM",
+        "fingerprint": "Cihaz parmak izi (hashlenmiş)",
+        "pseudonymous": "Pseudonim — itibar sistemi için",
+        "email": "E-posta adresi",
+        "optionalAuth": "İsteğe bağlı — yalnızca kayıt olursanız",
+        "realName": "Gerçek isim",
+        "neverCollected": "Asla toplanmaz",
+        "ipAddress": "IP adresi",
+        "notLogged": "Tarafımızca loglanmaz",
+        "browsingHistory": "Tarama geçmişi",
+        "honestNote": "Önemli: Biz IP adresi loglamasak da, altyapı sağlayıcılarımız (Vercel, Cloudflare) IP adreslerini içeren sunucu logları tutabilir. Maksimum anonimlik için Tor veya VPN kullanmanızı öneriyoruz."
+      },
+      "collect": {
+        "title": "Ne Topluyoruz",
+        "intro": "Yalnızca platformun çalışması için gerekli olanı topluyoruz:",
+        "tableData": "VERİ",
+        "tablePurpose": "AMAÇ",
+        "tableRetention": "SAKLAMA",
+        "fingerprintHash": "Parmak izi hash'i (SHA-256)",
+        "fingerprintPurpose": "Oturumlar arası itibar bağlantısı",
+        "fingerprintRetention": "Hesap silinene kadar",
+        "reputation": "İtibar skoru ve seviye",
+        "reputationPurpose": "Güven sistemi ve oy ağırlığı",
+        "reputationRetention": "Hesap silinene kadar",
+        "contributions": "Soruşturma katkıları",
+        "contributionsPurpose": "Topluluk doğrulama sistemi",
+        "contributionsRetention": "Kalıcı (ayrılırsanız anonim)",
+        "chatQueries": "AI sohbet sorguları",
+        "chatPurpose": "AI yanıt üretimi",
+        "chatRetention": "Yalnızca oturum — saklanmaz"
+      },
+      "thirdParty": {
+        "title": "Üçüncü Taraf Hizmetler",
+        "intro": "Aşağıdaki hizmetleri kullanıyoruz. Verileriniz bunlardan geçebilir:",
+        "tableService": "HİZMET",
+        "tableData": "PAYLAŞILAN VERİ",
+        "tableWhy": "NEDEN",
+        "groqData": "Sohbet sorularınız (yalnızca metin)",
+        "groqWhy": "AI destekli ağ analizi",
+        "supabaseData": "Pseudonim profil, katkılar",
+        "supabaseWhy": "Veritabanı ve kimlik doğrulama",
+        "vercelData": "Sunucu logları (IP, tarayıcı bilgisi)",
+        "vercelWhy": "Barındırma ve dağıtım",
+        "gcpData": "Yüklenen belgeler (geçici olarak)",
+        "gcpWhy": "OCR işleme — tarama sonrası silinir",
+        "honestNote": "Tüm sağlayıcılarla Sıfır Veri Saklama anlaşmaları üzerinde çalışıyoruz. O zamana kadar, AI sorgularınızın Groq sunucuları üzerinden geçtiği konusunda şeffafız."
+      },
+      "cookies": {
+        "title": "Çerezler ve İzleme",
+        "text": "Project Truth izleme çerezi, reklam çerezi veya analiz çerezi kullanmaz. Yalnızca kimlik doğrulama oturumları için gerekli çerezleri kullanırız (kayıt olursanız). Parmak izi hash'i itibar sürekliliği için tarayıcınızın yerel depolamasında saklanır — bu bir izleme çerezi değildir."
+      },
+      "yourRights": {
+        "title": "Haklarınız (GDPR ve Global)",
+        "intro": "Nerede yaşarsanız yaşayın, aşağıdaki haklara sahipsiniz:",
+        "tableRight": "HAK",
+        "tableHow": "NASIL KULLANILIR",
+        "tableSla": "YANIT SÜRESİ",
+        "access": "Verilerinize erişim",
+        "accessHow": "Bize e-posta gönderin veya platform içi hak talebi formunu kullanın",
+        "correction": "Yanlış verileri düzeltme",
+        "correctionHow": "Platform üzerinden düzeltme talebi gönderin",
+        "deletion": "Verilerinizi silme",
+        "deletionHow": "Tam silme talebi — parmak izi hash'i yok edilir",
+        "export": "Verilerinizi dışa aktarma",
+        "exportHow": "Tüm verilerinizin makine tarafından okunabilir dışa aktarımını talep edin",
+        "days": "gün",
+        "contact": "Herhangi bir hakkınızı kullanmak için"
+      },
+      "transparency": {
+        "title": "Altyapı Şeffaflığı",
+        "text": "Vercel (ABD) üzerinde barındırılıyoruz, veritabanı Supabase (ABD/AB), AI işleme Groq (ABD) ve belge işleme Google Cloud (ABD) üzerinde. İsveç merkezli bir kuruluşuz (ideell förening), İsveç ve AB gizlilik yasalarına tabiyiz. Üç ayda bir şeffaflık raporları yayınlamayı taahhüt ediyoruz: kaç veri talebi aldığımız, kaçını karşıladığımız ve sağlayacak verimiz olup olmadığı."
+      },
+      "children": {
+        "title": "Çocuk Gizliliği",
+        "text": "Project Truth 16 yaşın altındaki çocuklara yönelik değildir. Küçüklerden bilerek veri toplamayız. Bir küçüğün bize veri sağladığına inanıyorsanız, lütfen derhal bizimle iletişime geçin ve sileceğiz."
+      },
+      "changes": {
+        "title": "Politika Değişiklikleri",
+        "text": "Kayıtlı kullanıcıları önemli değişikliklerden e-posta ile haberdar edeceğiz. Anonim kullanıcılar için değişiklikler bu sayfada güncellenmiş tarihle yayınlanacaktır. Gizlilik korumalarını geriye dönük olarak asla zayıflatmayacağız."
+      },
+      "contact": {
+        "title": "İletişim",
+        "text": "Gizlilikle ilgili her türlü soru, endişe veya hak talebi için:"
+      },
+      "seeAlsoTerms": "Kullanım Koşulları",
+      "backToHome": "Ana Sayfaya Dön"
+    },
+    "terms": {
+      "title": "Kullanım Koşulları",
+      "lastUpdated": "SON GÜNCELLEME: NİSAN 2026",
+      "whatWeAre": {
+        "title": "Bu Platform Nedir",
+        "text1": "Project Truth, varlıklar (kişiler, kuruluşlar, olaylar) arasındaki kamuya açık belgelenmiş bağlantıları görselleştiren açık kaynaklı bir araştırma altyapısı platformudur. Kamu tarafından ve kamu için inşa edilen kolektif bir soruşturma aracıdır.",
+        "text2": "Bizi bir ilişki arama motoru olarak düşünün — kamu kayıtlarına, mahkeme belgelerine ve doğrulanmış kanıtlara işaret ediyoruz. Bilgiyi biz oluşturmuyoruz; kamusal alanda zaten var olanı düzenlemeye ve görselleştirmeye yardımcı oluyoruz."
+      },
+      "whatWeAreNot": {
+        "title": "Bu Platform Ne DEĞİLDİR",
+        "text": "Project Truth bir mahkeme, savcılık veya yayıncı değildir. Suçlama yapmayız, suç belirlemeyiz, yargılamayız. Platform bir altyapıdır — posta servisi gibi, bilgi akışını kolaylaştırırız, ancak içerik topluluk tarafından sağlanır ve doğrulanır.",
+        "disclaimer": "Bu platformda herhangi bir birey veya kuruluşun yer alması suçluluk, yanlış davranış veya suç faaliyeti göstermez. Tüm bireyler masum kabul edilir. Belgelenen bağlantılar, kamu kayıtlarında bulunan ilişkileri temsil eder, suistimal iddialarını değil."
+      },
+      "legalLanguage": {
+        "title": "Güvenli Hukuki Dil",
+        "text": "Platform dikkatli, hukuki olarak hassas bir dil kullanır. 'Suç ortağı' değil 'belgelenmiş bağlantı' deriz. 'Suçlu' değil 'mahkeme kayıtlarında yer alır' deriz. 'Müşterek fail' değil 'mali kayıtlarda bağlantılı' deriz. AI tarafından üretilen etiketler 'AI analizi' olarak işaretlenir ve her zaman topluluk doğrulamasına tabidir. Bu platformdaki hiçbir otomatik sistem herhangi bir birey hakkında kesin tespit yapmaz."
+      },
+      "conduct": {
+        "title": "Kullanıcı Davranışı",
+        "text": "Bu platformu bireyleri taciz etmek, ifşa etmek veya hedef almak için kullanmamayı kabul edersiniz. Kasıtlı olarak yanlış bilgi göndermemeyi kabul edersiniz. Platformun verilerini herhangi bir kişiye zarar vermek için kullanmamayı kabul edersiniz. İhlaller itibar cezası, seviye düşürme veya hesap kısıtlaması ile sonuçlanabilir. Platform bu ilkeleri ihlal eden içerikleri kaldırma hakkını saklı tutar."
+      },
+      "contributions": {
+        "title": "Topluluk Katkıları",
+        "text1": "Kanıt gönderdiğinizde, veri doğruladığınızda veya soruşturmalara katıldığınızda, katkılarınız ağa girmeden önce karantina ve akran inceleme sürecinden geçer. Doğrulanmış bilgi kamusal ortaklık haline gelir — herhangi bir bireysel katkıcıya değil, topluluğa aittir (Galileo İlkesi).",
+        "text2": "Kimliğinizi ve pseudonim profilinizi istediğiniz zaman silme hakkınızı saklı tutarsınız. Ancak, birden fazla bağımsız incelemeci tarafından doğrulanmış olgusal katkılar, anonimleştirilmiş kamusal bilgi olarak kalır."
+      },
+      "license": {
+        "title": "Açık Kaynak Lisansı",
+        "text": "Project Truth, GNU Affero Genel Kamu Lisansı v3.0 (AGPL-3.0) altında lisanslanmıştır. Bu, kaynak kodunun özgürce erişilebilir olduğu ve herhangi bir değişikliğin de aynı lisans altında paylaşılması gerektiği anlamına gelir. Bu, platformun asla tek bir varlık tarafından ele geçirilememesini sağlar.",
+        "link": "AGPL-3.0 lisansının tamamını oku →"
+      },
+      "disclaimer": {
+        "title": "Garanti Reddi",
+        "text": "Bu platform açık veya zımni herhangi bir garanti olmaksızın 'olduğu gibi' sağlanmaktadır. Görüntülenen bilgilerin doğruluğunu, eksiksizliğini veya güvenilirliğini garanti etmiyoruz. AI tarafından üretilen analizler hata içerebilir. Topluluk tarafından doğrulanmış veriler katkıcıların uzlaşısını yansıtır, mutlak gerçeği değil. Kritik bilgileri her zaman bağımsız kaynaklardan doğrulayın."
+      },
+      "liability": {
+        "title": "Sorumluluk Sınırlaması",
+        "text": "Yürürlükteki yasanın izin verdiği azami ölçüde, Project Truth, katkıcıları ve işletmecileri, platformu kullanımınızdan kaynaklanan dolaylı, arızi, özel, sonuçsal veya cezai zararlardan sorumlu olmayacaktır. Toplam sorumluluğumuz, platformu kullanmak için ödediğiniz tutarı (ücretsiz, açık kaynaklı bir hizmet olduğu için sıfırdır) aşmayacaktır."
+      },
+      "individualRights": {
+        "title": "Bireysel Haklar",
+        "text": "Bu platformda temsil edilen herhangi bir kişi veya kuruluş şu haklara sahiptir: yanlış bilgilerin düzeltilmesini talep etme, kaldırma talebi (kamu yararı dengelemesine tabi), bağlam ekleme talebi, yanlış suçlama bildirme ve hukuki durum güncelleme (örn. beraat, dava düşürme). Bu talepler belgelenmiş SLA taahhütleriyle hak talebi sistemimiz aracılığıyla işlenir. Tam detaylar için Gizlilik Politikamıza bakın."
+      },
+      "changes": {
+        "title": "Koşul Değişiklikleri",
+        "text": "Platform geliştikçe bu koşulları güncelleyebiliriz. Önemli değişiklikler platformda duyurulacak ve kayıtlı kullanıcılara iletilecektir. Değişikliklerden sonra kullanıma devam etmek, güncellenmiş koşulların kabul edilmesi anlamına gelir."
+      },
+      "contact": {
+        "title": "İletişim",
+        "text": "Hukuki sorular, hak talepleri veya bu koşullarla ilgili sorular için:"
+      },
+      "seeAlsoPrivacy": "Gizlilik Politikası",
+      "backToHome": "Ana Sayfaya Dön"
+    }
   }
 }

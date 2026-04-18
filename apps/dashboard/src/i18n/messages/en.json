@@ -65,7 +65,6 @@
       "f1Detail3Title": "Graduated Alarm",
       "f1Detail3Text": "Silent → Yellow → Red. Guarantors verify before full activation. No false positives.",
       "f1Quote": "Silence one journalist, and the documents reach thousands.",
-
       "f2Title": "Epistemological Layer",
       "f2Subtitle": "Every connection tells you how much to trust it",
       "f2Text": "Live cables pulse with evidence. Color shows evidence type. Brightness shows confidence. Pulse speed shows evidence density. At a glance, you see what's proven and what's alleged.",
@@ -75,7 +74,6 @@
       "f2Detail2Text": "0-100% confidence based on source hierarchy. Primary sources score highest.",
       "f2Detail3Title": "Source Hierarchy",
       "f2Detail3Text": "Primary → Secondary → Tertiary. A court ruling outweighs a social media claim.",
-
       "f3Title": "Collective Investigation",
       "f3Subtitle": "You're not alone",
       "f3Text": "Propose connections, submit evidence, vote on findings. The reputation system ensures accountability — stake your reputation on your claims, earn trust through accuracy.",
@@ -246,7 +244,36 @@
       "license": "License (AGPL-3.0)",
       "privacy": "Privacy",
       "terms": "Terms",
+      "rights": "Your Rights",
       "copyright": "© 2026 Project Truth Contributors"
+    },
+    "v2": {
+      "hero": {
+        "title": "See the Connections",
+        "subtitle": "An open-source platform built to map hidden networks, verify evidence through collective intelligence, and stand with those who bring the truth to light.",
+        "cta": "Explore the Network",
+        "scroll": "SCROLL"
+      },
+      "meaning": {
+        "label": "WHAT YOU CAN DO",
+        "title": "From scattered evidence to visible connections",
+        "seeTitle": "See the Network",
+        "seeText": "Interactive 3D visualization reveals hidden connections between people, organizations, and events. What was invisible becomes obvious.",
+        "scanTitle": "Scan Documents",
+        "scanText": "AI-powered document analysis extracts entities from court records, financial filings, and leaked documents. Every claim linked to its source.",
+        "verifyTitle": "Verify Together",
+        "verifyText": "No data enters the network unverified. Community peer review ensures precision over speed. Wrong information is worse than missing information."
+      },
+      "trust": {
+        "manifesto": "No data enters the network without verification. Precision over speed. Silence over falsehood.",
+        "openSource": "Fully Open Source",
+        "zeroTracking": "Pseudonymous Identity",
+        "communityVerified": "Community Verified"
+      },
+      "footer": {
+        "privacy": "Privacy",
+        "copyright": "© 2026 Project Truth. AGPL-3.0 License."
+      }
     }
   },
   "ui": {
@@ -514,5 +541,231 @@
     "errorEmailRequired": "Email is required",
     "errorPasswordLength": "Password must be at least 8 characters",
     "logout": "Sign Out"
+  },
+  "rights": {
+    "title": "INDIVIDUAL RIGHTS",
+    "disclaimer": "Inclusion on this platform does not indicate guilt. All individuals are presumed innocent until convicted.",
+    "requestCorrection": "Request Correction",
+    "requestRemoval": "Request Removal",
+    "falseAccusation": "Report False Accusation",
+    "caseDismissed": "Case Dismissed / Acquitted",
+    "statusUpdate": "Legal Status Update",
+    "slaNotice": "Requests are processed within the applicable SLA period.",
+    "gdprNotice": "GDPR Article 17 removal requests are processed within 30 days.",
+    "tierLabels": {
+      "centralFigure": "CENTRAL FIGURE",
+      "primarySubject": "PRIMARY SUBJECT",
+      "keyConnection": "KEY CONNECTION",
+      "connected": "CONNECTED",
+      "peripheral": "PERIPHERAL"
+    },
+    "legalLanguage": {
+      "alleged": "ALLEGED",
+      "convicted": "CONVICTED",
+      "charged": "CHARGED",
+      "documented": "DOCUMENTED",
+      "accused": "ACCUSED"
+    }
+  },
+  "survivor": {
+    "shield": "SURVIVOR PROTECTION SYSTEM",
+    "protected": "PROTECTED",
+    "identityProtected": "IDENTITY PROTECTED",
+    "protectedIndividual": "PROTECTED INDIVIDUAL",
+    "protectionActive": "SURVIVOR PROTECTION ACTIVE",
+    "cluster": "{count} Protected Survivors",
+    "doeCode": "Protected Identity Code",
+    "optOut": {
+      "title": "Request Removal",
+      "description": "If you are a survivor represented on this platform, you have the right to request removal, anonymization, or restriction of your data.",
+      "typeRemove": "Remove my information entirely",
+      "typeAnonymize": "Anonymize my identity (keep connection data)",
+      "typeRestrict": "Restrict access to my details",
+      "reason": "Please describe your request",
+      "email": "Contact email (optional, for response)",
+      "submit": "Submit Request",
+      "success": "Your request has been received and will be reviewed within 48 hours.",
+      "error": "There was an error submitting your request. Please try again."
+    },
+    "warning": {
+      "extreme": "This section contains detailed descriptions of sexual abuse, trafficking, or exploitation. This content may be deeply distressing.",
+      "severe": "This section references abuse, trafficking, or exploitation. Sensitive details are included.",
+      "moderate": "This section involves a survivor or victim. Content is presented with care.",
+      "mild": "This content includes references to victims or survivors.",
+      "proceed": "CONTINUE — I UNDERSTAND",
+      "goBack": "GO BACK",
+      "skipSession": "Don't show warnings for this session",
+      "support": "SUPPORT RESOURCES",
+      "countdown": "CONTINUE ({seconds}s)"
+    },
+    "archive": {
+      "statusProtected": "PROTECTED SURVIVOR",
+      "summaryRedacted": "This individual is a protected survivor. Details are restricted to protect their privacy and safety.",
+      "evidenceRestricted": "Evidence details are restricted for this protected individual.",
+      "connectionNote": "This connection involves a protected survivor. Limited details are shown."
+    }
+  },
+  "legal": {
+    "consent": {
+      "headline": "Honest pseudonymity.",
+      "body": "We recognize your device to maintain your reputation — but we don't know who you are. No tracking cookies. No ads. No personal data collection.",
+      "detail": "Your fingerprint hash enables reputation continuity. For full anonymity, use Tor.",
+      "privacyLink": "Read our Privacy Policy →",
+      "accept": "UNDERSTOOD"
+    },
+    "networkDisclaimer": {
+      "text": "Inclusion on this platform does not indicate guilt. All connections are based on public records and community-verified evidence. All individuals are presumed innocent until proven guilty in a court of law.",
+      "aiDisclaimer": "AI-generated analyses may contain errors and do not constitute legal findings. Always verify through independent sources.",
+      "learnMore": "Learn more about our methodology"
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "LAST UPDATED: APRIL 2026",
+      "corePromise": "We know your device, not you. Project Truth is built on a principle of honest pseudonymity — we are transparent about what we collect and what we don't. We will never claim to offer more privacy than we can technically guarantee.",
+      "identity": {
+        "title": "Our Identity Model",
+        "intro": "Project Truth uses a three-layer identity model. We are honest about each layer:",
+        "tableWhat": "DATA POINT",
+        "tableStatus": "STATUS",
+        "fingerprint": "Device fingerprint (hashed)",
+        "pseudonymous": "Pseudonymous — used for reputation",
+        "email": "Email address",
+        "optionalAuth": "Optional — only if you register",
+        "realName": "Real name",
+        "neverCollected": "Never collected",
+        "ipAddress": "IP address",
+        "notLogged": "Not logged by us",
+        "browsingHistory": "Browsing history",
+        "honestNote": "Important: While we do not log IP addresses, our infrastructure providers (Vercel, Cloudflare) may retain server logs that include IP addresses. For maximum anonymity, we recommend using Tor or a VPN."
+      },
+      "collect": {
+        "title": "What We Collect",
+        "intro": "We collect only what is necessary for the platform to function:",
+        "tableData": "DATA",
+        "tablePurpose": "PURPOSE",
+        "tableRetention": "RETENTION",
+        "fingerprintHash": "Fingerprint hash (SHA-256)",
+        "fingerprintPurpose": "Link your reputation across sessions",
+        "fingerprintRetention": "Until account deletion",
+        "reputation": "Reputation score & tier",
+        "reputationPurpose": "Trust system & vote weighting",
+        "reputationRetention": "Until account deletion",
+        "contributions": "Investigation contributions",
+        "contributionsPurpose": "Community verification system",
+        "contributionsRetention": "Permanent (anonymized if you leave)",
+        "chatQueries": "AI chat queries",
+        "chatPurpose": "Generate AI responses",
+        "chatRetention": "Session only — not stored"
+      },
+      "thirdParty": {
+        "title": "Third-Party Services",
+        "intro": "We use the following services. Your data may pass through them:",
+        "tableService": "SERVICE",
+        "tableData": "DATA SHARED",
+        "tableWhy": "WHY",
+        "groqData": "Your chat questions (text only)",
+        "groqWhy": "AI-powered network analysis",
+        "supabaseData": "Pseudonymous profile, contributions",
+        "supabaseWhy": "Database & authentication",
+        "vercelData": "Server logs (IP, user agent)",
+        "vercelWhy": "Hosting & deployment",
+        "gcpData": "Uploaded documents (temporarily)",
+        "gcpWhy": "OCR processing — deleted after scan",
+        "honestNote": "We are working toward Zero Data Retention agreements with all providers. Until then, we are transparent that your AI queries pass through Groq's servers."
+      },
+      "cookies": {
+        "title": "Cookies & Tracking",
+        "text": "Project Truth does not use tracking cookies, advertising cookies, or analytics cookies. We use only essential cookies required for authentication sessions (if you register). The fingerprint hash is stored in your browser's local storage for reputation continuity — this is not a tracking cookie."
+      },
+      "yourRights": {
+        "title": "Your Rights (GDPR & Global)",
+        "intro": "Regardless of where you live, you have the following rights:",
+        "tableRight": "RIGHT",
+        "tableHow": "HOW TO EXERCISE",
+        "tableSla": "RESPONSE TIME",
+        "access": "Access your data",
+        "accessHow": "Email us or use the in-platform rights request form",
+        "correction": "Correct inaccurate data",
+        "correctionHow": "Submit a correction request through the platform",
+        "deletion": "Delete your data",
+        "deletionHow": "Request full deletion — fingerprint hash destroyed",
+        "export": "Export your data",
+        "exportHow": "Request a machine-readable export of all your data",
+        "days": "days",
+        "contact": "To exercise any right"
+      },
+      "transparency": {
+        "title": "Infrastructure Transparency",
+        "text": "We are hosted on Vercel (US), with database on Supabase (US/EU), AI processing on Groq (US), and document processing on Google Cloud (US). We are a Sweden-based organization (ideell förening) subject to Swedish and EU privacy law. We commit to publishing quarterly transparency reports detailing: how many data requests we received, how many we fulfilled, and whether we had data to provide."
+      },
+      "children": {
+        "title": "Children's Privacy",
+        "text": "Project Truth is not intended for children under 16. We do not knowingly collect data from minors. If you believe a minor has provided data to us, please contact us immediately and we will delete it."
+      },
+      "changes": {
+        "title": "Changes to This Policy",
+        "text": "We will notify registered users of material changes via email. For anonymous users, changes will be posted on this page with an updated date. We will never retroactively weaken privacy protections."
+      },
+      "contact": {
+        "title": "Contact",
+        "text": "For any privacy-related questions, concerns, or rights requests:"
+      },
+      "seeAlsoTerms": "Terms of Service",
+      "backToHome": "Back to Home"
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "lastUpdated": "LAST UPDATED: APRIL 2026",
+      "whatWeAre": {
+        "title": "What This Platform Is",
+        "text1": "Project Truth is an open-source research infrastructure platform that visualizes publicly documented connections between entities (persons, organizations, events). It is a tool for collective investigation, built by and for the public.",
+        "text2": "Think of us as a search engine for relationships — we point to public records, court documents, and verified evidence. We do not create the information; we help organize and visualize what already exists in the public domain."
+      },
+      "whatWeAreNot": {
+        "title": "What This Platform Is NOT",
+        "text": "Project Truth is not a court, not a prosecutor, and not a publisher. We do not make accusations, determine guilt, or pass judgment. The platform is infrastructure — like the postal service, we facilitate the flow of information, but the content is contributed and verified by the community.",
+        "disclaimer": "Inclusion of any individual or organization on this platform does not indicate guilt, wrongdoing, or criminal activity. All individuals are presumed innocent. Documented connections represent relationships found in public records, not allegations of misconduct."
+      },
+      "legalLanguage": {
+        "title": "Safe Legal Language",
+        "text": "The platform uses careful, legally precise language. We say 'documented connection' not 'accomplice'. We say 'appears in court records' not 'is guilty'. We say 'linked in financial records' not 'co-conspirator'. AI-generated labels are marked as 'AI analysis' and are always subject to community verification. No automated system on this platform makes final determinations about any individual."
+      },
+      "conduct": {
+        "title": "User Conduct",
+        "text": "You agree not to use this platform to harass, doxx, or target individuals. You agree not to submit deliberately false information. You agree not to use the platform's data to cause harm to any person. Violations may result in reputation penalties, tier demotion, or account restriction. The platform reserves the right to remove content that violates these principles."
+      },
+      "contributions": {
+        "title": "Community Contributions",
+        "text1": "When you contribute evidence, verify data, or participate in investigations, your contributions pass through a quarantine and peer-review process before entering the network. Verified information becomes part of the public commons — it belongs to the community, not to any individual contributor (Galileo Principle).",
+        "text2": "You retain the right to delete your identity and pseudonymous profile at any time. However, verified factual contributions that have been confirmed by multiple independent reviewers remain as anonymized public knowledge."
+      },
+      "license": {
+        "title": "Open Source License",
+        "text": "Project Truth is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0). This means the source code is freely available, and any modifications must also be shared under the same license. This ensures the platform can never be captured by a single entity.",
+        "link": "Read the full AGPL-3.0 license →"
+      },
+      "disclaimer": {
+        "title": "Disclaimer of Warranties",
+        "text": "This platform is provided 'as is' without warranties of any kind, express or implied. We do not guarantee the accuracy, completeness, or reliability of any information displayed. AI-generated analysis may contain errors. Community-verified data reflects the consensus of contributors, not absolute truth. Always verify critical information through independent sources."
+      },
+      "liability": {
+        "title": "Limitation of Liability",
+        "text": "To the maximum extent permitted by applicable law, Project Truth, its contributors, and its operators shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform. Our total liability shall not exceed the amount you have paid to use the platform (which is zero, as this is a free, open-source service)."
+      },
+      "individualRights": {
+        "title": "Individual Rights",
+        "text": "Any person or organization represented on this platform has the right to: request correction of inaccurate information, request removal (subject to public interest balancing), request context addition, report false accusations, and update legal status (e.g., acquittal, case dismissal). These requests are processed through our rights request system with documented SLA commitments. See our Privacy Policy for full details."
+      },
+      "changes": {
+        "title": "Changes to These Terms",
+        "text": "We may update these terms as the platform evolves. Material changes will be announced on the platform and communicated to registered users. Continued use after changes constitutes acceptance of the updated terms."
+      },
+      "contact": {
+        "title": "Contact",
+        "text": "For legal inquiries, rights requests, or questions about these terms:"
+      },
+      "seeAlsoPrivacy": "Privacy Policy",
+      "backToHome": "Back to Home"
+    }
   }
 }
