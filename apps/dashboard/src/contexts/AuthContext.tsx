@@ -70,6 +70,32 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // PROVIDER
 // ============================================
 
+/**
+ * Ensure truth_user exists in DB via server-side API (bypasses RLS)
+ * Called when we have an auth session but no truth_user record
+ */
+async function ensureUserInDB(accessToken: string): Promise<TruthUser | null> {
+    try {
+        const res = await fetch('/api/auth/ensure-user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({ access_token: accessToken }),
+        });
+        if (!res.ok) {
+            console.error('[ensureUserInDB] API error:', res.status);
+            return null;
+        }
+        const data = await res.json();
+        return data.user || null;
+    } catch (err) {
+        console.error('[ensureUserInDB] Fetch error:', err);
+        return null;
+    }
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     // State
     const [user, setUser] = useState<TruthUser | null>(null);
@@ -91,12 +117,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const initAuth = async () => {
             setIsLoading(true);
             try {
-                // 1. Check for Supabase auth session
+                // 1. Check for Supabase auth session → truth_user
                 const authUser = await getCurrentUser();
                 if (authUser) {
                     setUser(authUser);
                     setIsLoading(false);
                     return;
+                }
+
+                // 1b. Check if Supabase auth session exists but no truth_user (RLS or DB issue)
+                // If so, use server-side API to create truth_user (bypasses RLS)
+                const pkceClient = typeof window !== 'undefined' ? getAuthClient() : null;
+                if (pkceClient) {
+                    try {
+                        const { data: { session } } = await pkceClient.auth.getSession();
+                        if (session?.user && session.access_token) {
+                            console.warn('[AuthContext] Auth session found but no truth_user — calling ensure-user API');
+
+                            // Try server-side creation (bypasses RLS)
+                            const dbUser = await ensureUserInDB(session.access_token);
+                            if (dbUser) {
+                                clearAnonymousUser();
+                                setUser(dbUser);
+                                setIsLoading(false);
+                                return;
+                            }
+
+                            // Server-side also failed — use local fallback so UI works
+                            console.warn('[AuthContext] ensure-user API failed — using local fallback');
+                            const fallbackUser: TruthUser = {
+                                id: session.user.id,
+                                auth_id: session.user.id,
+                                anonymous_id: `WITNESS_${session.user.id.substring(0, 8)}`,
+                                display_name: session.user.email?.split('@')[0] || session.user.user_metadata?.full_name || 'Kullanıcı',
+                                trust_level: 1 as TrustLevel,
+                                reputation_score: 0,
+                                contributions_count: 0,
+                                verified_contributions: 0,
+                                false_contributions: 0,
+                                preferred_language: 'tr',
+                                created_at: new Date().toISOString(),
+                            };
+                            clearAnonymousUser();
+                            setUser(fallbackUser);
+                            setIsLoading(false);
+                            return;
+                        }
+                    } catch {
+                        // getSession failed — continue to anonymous check
+                    }
                 }
 
                 // 2. Check for stored anonymous user
@@ -142,10 +211,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                     clearAnonymousUser();
                     setUser(truthUser);
                     setShowAuthModal(false);
-                    setIsLoading(false);
+                } else {
+                    // Auth session exists but no truth_user in DB (RLS issue or first login race)
+                    // Try server-side API first, then local fallback
+                    console.warn('[AuthContext] SIGNED_IN but no truth_user found — calling ensure-user API');
+                    const { data: { session: currentSession } } = await pkceClient.auth.getSession();
+                    if (currentSession?.access_token) {
+                        const dbUser = await ensureUserInDB(currentSession.access_token);
+                        if (dbUser) {
+                            clearAnonymousUser();
+                            setUser(dbUser);
+                            setIsLoading(false);
+                            return;
+                        }
+                    }
+
+                    // Server-side also failed — use local fallback
+                    const fallbackUser: TruthUser = {
+                        id: session.user.id,
+                        auth_id: session.user.id,
+                        anonymous_id: `WITNESS_${session.user.id.substring(0, 8)}`,
+                        display_name: session.user.email?.split('@')[0] || session.user.user_metadata?.full_name || 'Kullanıcı',
+                        trust_level: 1 as TrustLevel,
+                        reputation_score: 0,
+                        contributions_count: 0,
+                        verified_contributions: 0,
+                        false_contributions: 0,
+                        preferred_language: 'tr',
+                        created_at: new Date().toISOString(),
+                    };
+                    clearAnonymousUser();
+                    setUser(fallbackUser);
                 }
+                setIsLoading(false);
             } else if (event === 'SIGNED_OUT') {
                 setUser(null);
+                setIsLoading(false);
             }
         });
 

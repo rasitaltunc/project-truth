@@ -44,8 +44,14 @@ export function useRequireAuth(options: UseRequireAuthOptions = {}) {
     if (isLoading) return; // Still loading — don't redirect yet
 
     if (requireLogin && !isLoggedIn) {
-      // Not logged in — redirect to auth page
-      router.push(redirectTo);
+      // Double-check: give onAuthStateChange a moment to fire
+      // (session might be in localStorage but auth state not yet propagated)
+      const timer = setTimeout(() => {
+        if (!isLoggedIn) {
+          router.push(redirectTo);
+        }
+      }, 500);
+      return () => clearTimeout(timer);
     }
   }, [isLoading, isLoggedIn, requireLogin, redirectTo, router]);
 
