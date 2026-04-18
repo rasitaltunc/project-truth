@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
       "font-src 'self'",
       "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.groq.com https://unpkg.com https://cdn.jsdelivr.net https://tessdata.projectnaptha.com https://storage.googleapis.com https://*.googleapis.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://vercel.live",
       "worker-src 'self' blob:",
+      "frame-src 'self' https://vercel.live",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
