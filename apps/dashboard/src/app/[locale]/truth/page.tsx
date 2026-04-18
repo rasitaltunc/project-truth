@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef, useMemo } from 'react';
+import { useState, useCallback, useRef, useMemo, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { ConnectionData } from '@/components/ConnectionTimelinePanel';
 
@@ -9,6 +9,7 @@ import { useTruthData } from '@/hooks/truth/useTruthData';
 import { useInitializeStores } from '@/hooks/truth/useInitializeStores';
 import { useModalState } from '@/hooks/truth/useModalState';
 import { useTruthHandlers } from '@/hooks/truth/useTruthHandlers';
+import { useForceLayout } from '@/hooks/useForceLayout';
 
 // Extracted components (Sprint 18)
 import { ActionButtonGrid, TruthModals, LinkDetailPanel } from '@/components/Truth';
@@ -44,10 +45,16 @@ import LensEmptyState from '@/components/LensEmptyState';
 import LensTransitionFlash from '@/components/LensTransitionFlash';
 import BoardTransition from '@/components/InvestigationBoard/BoardTransition';
 import CinematicOpening from '@/components/CinematicOpening';
+import VoyagerHint from '@/components/VoyagerHint';
 import GuidedTour from '@/components/GuidedTour';
 import AuthHeader from '@/components/AuthHeader';
+import { useAuth } from '@/contexts/AuthContext';
 import SystemPulseWidget from '@/components/SystemPulseWidget';
+import ConsentBanner from '@/components/ConsentBanner';
+import NetworkDisclaimer from '@/components/NetworkDisclaimer';
+import ModerationPanel from '@/components/ModerationPanel';
 import { useInvestigationGameStore } from '@/store/investigationGameStore';
+import { useSurvivorStore } from '@/store/survivorStore';
 
 // Heavy components (dynamic import, no SSR)
 const InvestigationGamePanel = dynamic(() => import('@/components/InvestigationGame/InvestigationGamePanel'), { ssr: false, loading: () => null });
@@ -66,12 +73,58 @@ export default function Truth3D() {
     // ── Data ──
     const { nodes, links, loading, activeNetworkId, isRealtimeConnected } = useTruthData();
 
+    // ── Force-Directed Physics Layout ──
+    // Nature-inspired positioning — hub emergence via physics, not tiers
+    const forceLayoutLinks = useMemo(() =>
+        links.map(l => ({
+            source: (typeof l.source === 'object' ? l.source?.id : l.source) || l.source_id || '',
+            target: (typeof l.target === 'object' ? l.target?.id : l.target) || l.target_id || '',
+            evidence_count: l.evidence_count || 1,
+            strength: l.confidence_level ? l.confidence_level * 100 : 50,
+        })),
+    [links]);
+
+    const { positions: forcePositions, isSimulating: forceSimulating, focusNode: forceFocusNode } =
+        useForceLayout(nodes, forceLayoutLinks);
+
     // ── Store Initialization ──
     const {
         cinematicNodeReveal, cinematicLinkReveal,
         nodeHeatMap, consensusAnnotations,
         firstDiscovery, clearFirstDiscovery,
     } = useInitializeStores(loading, nodes.length);
+
+    // ── Survivor Protection (Sprint SP-1) ──
+    const initSurvivorProtections = useSurvivorStore(s => s.initializeProtections);
+    useMemo(() => {
+        if (nodes.length > 0) {
+            initSurvivorProtections(nodes, links, activeNetworkId || 'unknown');
+        }
+    }, [nodes, links, activeNetworkId, initSurvivorProtections]);
+
+    // ── Auth state (for AuthHeader visibility bypass) ──
+    const { isAuthenticated, isAnonymous } = useAuth();
+    const isLoggedIn = isAuthenticated && !isAnonymous;
+
+    // ── Progressive Disclosure (Faz 0 — ilk kullanıcı deneyimi) ──
+    const [isExplorer, setIsExplorer] = useState(false);
+    const [hasInteracted, setHasInteracted] = useState(false);
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const explored = localStorage.getItem('truth_explored');
+            if (explored) setIsExplorer(true);
+        }
+    }, []);
+    const unlockExplorer = useCallback(() => {
+        if (!isExplorer) {
+            setIsExplorer(true);
+            localStorage.setItem('truth_explored', 'true');
+        }
+    }, [isExplorer]);
+    // İlk node tıklaması veya chat açılışı = kullanıcı etkileşime geçti
+    const markInteracted = useCallback(() => {
+        if (!hasInteracted) setHasInteracted(true);
+    }, [hasInteracted]);
 
     // ── Modal State ──
     const modals = useModalState();
@@ -90,7 +143,7 @@ export default function Truth3D() {
     const endCinematicRef = useRef<(() => void) | null>(null);
 
     // ── Handlers ──
-    const { handleNodeClick, handleLinkClick, closeLinkDetail, handleReset, handleEnterBoard, handleExitBoard } =
+    const { handleNodeClick: _handleNodeClick, handleLinkClick, closeLinkDetail, handleReset, handleEnterBoard, handleExitBoard } =
         useTruthHandlers({
             nodes,
             setSelectedNode,
@@ -98,6 +151,14 @@ export default function Truth3D() {
             setActiveLinkDetail,
             endCinematicRef,
         });
+    // Wrap handleNodeClick to track first interaction + ego-network physics
+    const handleNodeClick = useCallback((node: any) => {
+        markInteracted();
+        unlockExplorer();
+        _handleNodeClick(node);
+        // Ego-network: pin clicked node to center, reheat physics
+        if (node?.id) forceFocusNode(node.id);
+    }, [_handleNodeClick, markInteracted, unlockExplorer, forceFocusNode]);
 
     // ── View Mode + Board ──
     const { activeMode: viewMode, timelineRange } = useViewModeStore();
@@ -149,8 +210,8 @@ export default function Truth3D() {
 
     return (
         <>
-            {/* === AUTH HEADER (top-right) === */}
-            <AuthHeader />
+            {/* === AUTH HEADER (top-right) — always visible when logged in, otherwise after exploration === */}
+            {(isLoggedIn || isExplorer || hasInteracted) && <AuthHeader />}
 
             {/* === 3D SAHNE === */}
             <div style={{ position: 'fixed', inset: 0, backgroundColor: '#030303' }}>
@@ -178,6 +239,8 @@ export default function Truth3D() {
                         corridorWalkSourceId={activeLinkDetail?.sourceId}
                         corridorWalkTargetId={activeLinkDetail?.targetId}
                         onCorridorWalkPhaseChange={setCorridorWalkPhase}
+                        forcePositions={forcePositions}
+                        forceSimulating={forceSimulating}
                     />
                 )}
 
@@ -222,11 +285,11 @@ export default function Truth3D() {
                 )}
 
                 {/* Lens Sidebar + Overlay Components */}
-                <div data-tour="lens-sidebar"><LensSidebar /></div>
+                {isExplorer && <div data-tour="lens-sidebar"><LensSidebar /></div>}
                 <LensTransitionFlash />
                 <BoardTransition />
 
-                {!isBoardMode && (
+                {!isBoardMode && isExplorer && (
                     <EpistemologicalLegend
                         epistemologicalMode={modals.epistemologicalMode}
                         onToggle={() => modals.setEpistemologicalMode(!modals.epistemologicalMode)}
@@ -269,11 +332,11 @@ export default function Truth3D() {
                 {/* USER BADGE — replaced by AuthHeader (Sprint Auth) */}
                 {/* Old UserBadge removed to prevent overlap with new auth system */}
 
-                {/* SYSTEM PULSE WIDGET */}
-                <SystemPulseWidget networkId={activeNetworkId || undefined} />
+                {/* SYSTEM PULSE WIDGET — hidden for first-time visitors */}
+                {isExplorer && <SystemPulseWidget networkId={activeNetworkId || undefined} />}
 
-                {/* ACTION BUTTONS */}
-                <ActionButtonGrid
+                {/* ACTION BUTTONS — hidden until user interacts */}
+                {(isExplorer || hasInteracted) && <ActionButtonGrid
                     isBoardMode={isBoardMode}
                     onDocSubmit={() => modals.setShowDocSubmit(true)}
                     onMoneyTracker={() => modals.setShowMoneyTracker(true)}
@@ -283,8 +346,32 @@ export default function Truth3D() {
                     onCollectiveShield={() => modals.setShowCollectiveShield(true)}
                     onDocArchive={() => setDocArchiveOpen(true)}
                     onInvestigate={() => useInvestigationGameStore.getState().openDesk()}
-                    onReset={handleReset}
-                />
+                    onModeration={() => { import('@/store/moderationStore').then(m => m.useModerationStore.getState().openPanel()); }}
+                    onReset={() => { handleReset(); forceFocusNode(null); }}
+                />}
+
+                {/* ONBOARDING HINT — only for first-time visitors who haven't interacted yet */}
+                {!isExplorer && !hasInteracted && !loading && (
+                    <div style={{
+                        position: 'absolute', bottom: '3rem', left: '50%', transform: 'translateX(-50%)',
+                        zIndex: 20, pointerEvents: 'none', textAlign: 'center',
+                        animation: 'fadeInUp 1.5s ease-out 2s both',
+                    }}>
+                        <div style={{
+                            padding: '10px 24px', borderRadius: '8px',
+                            backgroundColor: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)',
+                            border: '1px solid rgba(153,27,27,0.3)',
+                        }}>
+                            <span style={{
+                                color: '#e5e5e5', fontSize: '13px', letterSpacing: '0.15em',
+                                fontFamily: 'monospace', opacity: 0.9,
+                            }}>
+                                CLICK A NODE TO BEGIN INVESTIGATION
+                            </span>
+                        </div>
+                        <style>{`@keyframes fadeInUp { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }`}</style>
+                    </div>
+                )}
 
                 {/* LOADING */}
                 {loading && (
@@ -311,6 +398,7 @@ export default function Truth3D() {
 
             {/* === OVERLAYS === */}
             <CinematicOpening />
+            <VoyagerHint />
             <GuidedTour />
             <ThreadingMode />
 
@@ -353,8 +441,8 @@ export default function Truth3D() {
                 />
             </div>
 
-            {/* Story Panel */}
-            {!activeLinkDetail && (
+            {/* Story Panel — hidden for first-time visitors */}
+            {isExplorer && !activeLinkDetail && (
                 <StoryPanel
                     nodes={nodes}
                     onNodeClick={(nodeId) => {
@@ -413,6 +501,15 @@ export default function Truth3D() {
                 networkId={activeNetworkId || ''}
                 fingerprint={useInvestigationStore.getState().fingerprint || 'anonymous'}
             />
+
+            {/* === MODERATION PANEL (Tier 3+ moderators) === */}
+            <ModerationPanel />
+
+            {/* === NETWORK DISCLAIMER (Legal Fortress — always visible) === */}
+            <NetworkDisclaimer />
+
+            {/* === CONSENT BANNER (BK-5: Honest Pseudonymity) === */}
+            <ConsentBanner />
         </>
     );
 }
