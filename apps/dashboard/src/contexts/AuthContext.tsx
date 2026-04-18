@@ -214,19 +214,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 } else {
                     // Auth session exists but no truth_user in DB (RLS issue or first login race)
                     // Try server-side API first, then local fallback
-                    console.warn('[AuthContext] SIGNED_IN but no truth_user found — calling ensure-user API');
-                    const { data: { session: currentSession } } = await pkceClient.auth.getSession();
-                    if (currentSession?.access_token) {
-                        const dbUser = await ensureUserInDB(currentSession.access_token);
-                        if (dbUser) {
-                            clearAnonymousUser();
-                            setUser(dbUser);
-                            setIsLoading(false);
-                            return;
+                    try {
+                        console.warn('[AuthContext] SIGNED_IN but no truth_user found — calling ensure-user API');
+                        const { data: { session: currentSession } } = await pkceClient.auth.getSession();
+                        if (currentSession?.access_token) {
+                            const dbUser = await ensureUserInDB(currentSession.access_token);
+                            if (dbUser) {
+                                clearAnonymousUser();
+                                setUser(dbUser);
+                                setIsLoading(false);
+                                return;
+                            }
                         }
+                    } catch (ensureErr) {
+                        console.error('[AuthContext] ensure-user fallback error:', ensureErr);
                     }
 
-                    // Server-side also failed — use local fallback
+                    // Server-side also failed — use local fallback (always works)
+                    console.warn('[AuthContext] Using local fallback user for:', session.user.email);
                     const fallbackUser: TruthUser = {
                         id: session.user.id,
                         auth_id: session.user.id,

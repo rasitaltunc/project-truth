@@ -20,8 +20,8 @@ const nextConfig: NextConfig = {
     // Production: NO unsafe-eval (React/Next.js don't need it)
     // Development: unsafe-eval needed for React Fast Refresh / HMR
     const scriptSrc = isProd
-      ? "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com/ajax/libs/ https://unpkg.com https://cdn.jsdelivr.net"
-      : "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdnjs.cloudflare.com/ajax/libs/ https://unpkg.com https://cdn.jsdelivr.net";
+      ? "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com/ajax/libs/ https://unpkg.com https://cdn.jsdelivr.net https://vercel.live"
+      : "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://cdnjs.cloudflare.com/ajax/libs/ https://unpkg.com https://cdn.jsdelivr.net https://vercel.live";
 
     const csp = [
       "default-src 'self'",
@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://*.supabase.co https://upload.wikimedia.org https://commons.wikimedia.org https://storage.googleapis.com",
       "font-src 'self'",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.groq.com https://unpkg.com https://cdn.jsdelivr.net https://tessdata.projectnaptha.com https://storage.googleapis.com https://*.googleapis.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.de.sentry.io",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.groq.com https://unpkg.com https://cdn.jsdelivr.net https://tessdata.projectnaptha.com https://storage.googleapis.com https://*.googleapis.com https://*.sentry.io https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://vercel.live",
       "worker-src 'self' blob:",
       "frame-ancestors 'none'",
       "base-uri 'self'",
